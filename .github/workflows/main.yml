@@ -8,35 +8,27 @@ on:
 jobs:
   build-and-deploy:
 
-    runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.3
+      - name: Checkout of the Code
+        uses: actions/checkout@v3
 
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
+      - name: Install .NET Environment
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.300'
 
-    - name: dotnet publish 
-      run: |
-        dotnet publish -c Release -o public
+      - name: Verify the .NET Installation
+        run: dotnet --version
 
-    - name: Deploy to IIS
-      uses: ChristopheLav/iis-deploy@v1
-      with:
-        website-name: 'MyWebsite'
-        msdeploy-service-url: ${{ secrets.MSDEPLOY_URL }}
-        msdeploy-username: ${{ secrets.MSDEPLOY_USERNAME }}
-        msdeploy-password: ${{ secrets.MSDEPLOY_PASSWORD }}
-        source-path: ./public/*
+      - name: Build the Application with .NET
+        run: dotnet build --configuration Release
 
-    # - name: Deploy to IIS
-    #   run: |
-    #     iisreset /stop
-    #     Copy-Item ./public/* C:/inetpub/wwwroot/ -Recurse -Force
-    #     iisreset /start
-    
+      - name: Publish the Deployment Package in public folder
+        run: dotnet publish -c Release -o public
+
+      - name: Zip the Public Folder
+        run: zip -r public.zip public/
+
+      - name: Check weather Zip file is created or not.
+        run: ls -l public.zip
