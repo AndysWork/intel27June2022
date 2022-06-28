@@ -50,4 +50,6 @@ jobs:
       - name: Test, if the File is downloaded successfully or not.
         run: |
           ls -la
-        
+      - name: Unzip file
+        run: |
+          unzip public-$GITHUB_RUN_NUMBER.zip
