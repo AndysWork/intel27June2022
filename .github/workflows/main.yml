@@ -37,7 +37,7 @@ jobs:
       
       - name: Upload to Artifact
         run: |
-          curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -T public.zip "https://nishanthinteldemo.jfrog.io/artifactory/jfrogintel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
+          curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -T public.zip "https://testraining.jfrog.io/artifactory/intel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
 
       - name: Download the file from JFROG
         run: |
-          curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -O "https://nishanthinteldemo.jfrog.io/artifactory/jfrogintel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
+          curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -O "https://testraining.jfrog.io/artifactory/intel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
       - name: Test, if the File is downloaded successfully or not.
         run: |
           ls -la
