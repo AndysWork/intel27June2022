@@ -44,9 +44,8 @@ jobs:
           user: ${{secrets.USER}}
           password: ${{secrets.PASSWORD}}
           ssh_options: -o StrictHostKeyChecking=no
-          #pre_upload: ""
-          #post_upload: ls -la ~/public
-          post_upload: dir
+          pre_upload: rmdir /s /q public
+          post_upload: xcopy /s /y public C:\inetpub\wwwroot\
       
   #     - name: Upload to Artifact
   #       run: |
