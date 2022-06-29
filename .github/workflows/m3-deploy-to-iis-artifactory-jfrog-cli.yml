@@ -52,14 +52,10 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Install JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v2
-        with:
-          version: latest
 
       - name: Run JFrog CLI
         run: |
-          jf rt dl "https://testraining.jfrog.io/artifactory/intel27june2022-generic-local/public-latest.zip" public.zip
+          jf rt dl aspdotnet-generic-local/public-latest.zip public.zip
       - name: Unzip the File
         run: |
           Expand-Archive .\public.zip . -Force
