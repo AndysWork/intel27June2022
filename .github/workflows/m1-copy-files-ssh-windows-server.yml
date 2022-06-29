@@ -1,9 +1,12 @@
-name: .NET Core Deploy to IIS
+name: Method 1- Copy Files via SSH to Windows Server
 
-on: 
-  push:
-    branches: [ "master" ]
+on:
+  # push:
+  #   branches:
+  #     - main
+
   workflow_dispatch:
+
 env:
   GITHUBRUNNERID: $GITHUB_RUN_NUMBER
 
@@ -45,11 +48,12 @@ jobs:
           password: ${{secrets.PASSWORD}}
           ssh_options: -o StrictHostKeyChecking=no
           pre_upload: rmdir /s /q public
-          post_upload: xcopy /s /y public C:\inetpub\wwwroot\
+          post_upload: iisreset /stop && xcopy /s /y public C:\inetpub\wwwroot\ && iisreset /start
       
-  #     - name: Upload to Artifact
-  #       run: |
-  #         curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -T public.zip "https://testraining.jfrog.io/artifactory/intel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
+
+      # - name: Upload to Artifact
+      #   run: |
+      #     curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -T public.zip "https://nishanthinteldemo.jfrog.io/artifactory/jfrogintel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
 
   # deploy:
   #   runs-on: ubuntu-latest
@@ -58,10 +62,17 @@ jobs:
 
   #     - name: Download the file from JFROG
   #       run: |
-  #         curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -O "https://testraining.jfrog.io/artifactory/intel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip"
+  #         curl -H "X-JFrog-Art-Api:${{ secrets.JFROGKEY }}" -O "https://nishanthinteldemo.jfrog.io/artifactory/jfrogintel27june2022-generic-local/public-$GITHUB_RUN_NUMBER.zip" -L
+
   #     - name: Test, if the File is downloaded successfully or not.
   #       run: |
   #         ls -la
-  #     - name: Unzip file
+
+  #     - name: Lets Unzip the Folder
   #       run: |
   #         unzip public-$GITHUB_RUN_NUMBER.zip
+
+  #     - name: Check the Contents of the Public Directory
+  #       run: |
+  #         ls -la
+
